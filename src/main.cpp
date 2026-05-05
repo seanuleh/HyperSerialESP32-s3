@@ -65,6 +65,12 @@
 	#elif NEOPIXEL_RGB
 		#define LED_DRIVER NeoPixelBus<NeoGrbFeature, NeoEsp32I2s0Ws2812xMethod>
 	#endif
+#elif defined(CONFIG_IDF_TARGET_ESP32S3)
+	#ifdef NEOPIXEL_RGBW
+		#define LED_DRIVER NeoPixelBus<NeoGrbwFeature, NeoEsp32Rmt0Sk6812Method>
+	#elif NEOPIXEL_RGB
+		#define LED_DRIVER NeoPixelBus<NeoGrbFeature, NeoEsp32Rmt0Ws2812xMethod>
+	#endif
 #else
 	#ifdef NEOPIXEL_RGBW
 		#define LED_DRIVER NeoPixelBus<NeoGrbwFeature, NeoEsp32I2s1Sk6812Method>
@@ -110,6 +116,16 @@
 			#else
 				#define LED_DRIVER2 NeoPixelBus<NeoGrbFeature, NeoEsp32I2s0Ws2812xMethod>
 			#endif
+		#elif SPILED_APA102
+			#define LED_DRIVER2 NeoPixelBus<DotStarLbgrFeature, DotStarEsp32DmaHspiMethod>
+		#elif SPILED_WS2801
+			#define LED_DRIVER2 NeoPixelBus<NeoRbgFeature, NeoWs2801Spi2MhzMethod>
+		#endif
+	#elif defined(CONFIG_IDF_TARGET_ESP32S3)
+		#ifdef NEOPIXEL_RGBW
+			#define LED_DRIVER2 NeoPixelBus<NeoGrbwFeature, NeoEsp32Rmt1Sk6812Method>
+		#elif NEOPIXEL_RGB
+			#define LED_DRIVER2 NeoPixelBus<NeoGrbFeature, NeoEsp32Rmt1Ws2812xMethod>
 		#elif SPILED_APA102
 			#define LED_DRIVER2 NeoPixelBus<DotStarLbgrFeature, DotStarEsp32DmaHspiMethod>
 		#elif SPILED_WS2801
@@ -217,7 +233,7 @@ void setup()
 		#endif
 	#endif
 
-	#if !defined(CONFIG_IDF_TARGET_ESP32S2)
+	#if !defined(CONFIG_IDF_TARGET_ESP32S2) && !defined(CONFIG_IDF_TARGET_ESP32S3)
 		// Display config
 		Serial.println(HELLO_MESSAGE);
 		#if defined(SECOND_SEGMENT_START_INDEX)
